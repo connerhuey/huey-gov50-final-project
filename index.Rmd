@@ -11,4 +11,4 @@ output:
 
 ## Project thoughts
 
-For my final project, I'm interested in exploring topics broadly related to voter identity and political behavior from the 1990s to the present day. 
+For my final project, I'm interested in exploring topics broadly related to voter identity and political behavior from the 1990s to the present day. In particular, I'm interested in exploring either voter shift during the 1994 Congressional election, which coincides with Newt Gingrich's Contract with America, or the 2016 presidential election.
