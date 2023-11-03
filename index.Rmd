@@ -7,6 +7,19 @@ output:
     self_contained: false
 ---
 
+## Data Visualization
+
+```{r}
+library(tidyverse)
+
+civilwar |>
+  filter(gdpenl > 0) |>
+  ggplot(aes(x = gdpenl, y = polity2)) +
+  geom_point(size = 0.5) +
+  geom_smooth() +
+  ylim(-10, 10)
+```
+
 
 ## Project Proposal
 
