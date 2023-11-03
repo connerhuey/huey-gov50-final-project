@@ -11,6 +11,7 @@ output:
 
 ```{r}
 library(tidyverse)
+civilwar <- read_csv("civilwar.csv")
 
 civilwar |>
   filter(gdpenl > 0) |>
