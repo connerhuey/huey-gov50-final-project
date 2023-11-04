@@ -27,7 +27,8 @@ civilwar |>
     title = "Effect of Per Capita Gross Domestic Product on Democratization in 1999",
     caption = "Note: Dollars are in 1985 Dollars"
   )
-
+```
+```{r}
 civilwar |>
   ggplot(aes(x = gdpen, y = polity2)) +
   geom_point(size = 0.5) +
@@ -40,7 +41,6 @@ civilwar |>
     caption = "Note: Dollars are in 1985 Dollars"
   )
 ```
-
 
 ## Project Proposal
 
