@@ -9,24 +9,44 @@ output:
 
 ## Data Visualization
 
+I have produced two data visualizations pertaining to my research question of the effects of GDP per capita on a country's democratization. I find an interesting difference between my two visualizations. My first visualization explores the effects of GDP per capita on countries' democratization in 1999, finding that there seems to exist a positive relationship between GDP per capita and a country's democratization. However, my second visualization, which explores this relationship between GDP per capita and democratization across all countries from 1945 to 1999, there appears to be a positive relationship between GDP per capita and democratization until approximately $10,000 USD per capita when the relationship becomes negative, implying that as per capita GDP increases beyond $10,000, the more likely a country is authoritarian.
+
 ```{r}
 library(tidyverse)
 civilwar <- read_csv("civilwar.csv")
 
 civilwar |>
-  filter(gdpenl > 0) |>
-  ggplot(aes(x = gdpenl, y = polity2)) +
+  filter(year == 1999) |>
+  ggplot(aes(x = gdpen, y = polity2)) +
   geom_point(size = 0.5) +
   geom_smooth() +
-  ylim(-10, 10)
+  ylim(-10, 10) +
+  labs(
+    x = "Per Capita Gross Domestic Product in Thousands of USD",
+    y = "Democratization Index",
+    title = "Effect of Per Capita Gross Domestic Product on Democratization in 1999",
+    caption = "Note: Dollars are in 1985 Dollars"
+  )
+
+civilwar |>
+  ggplot(aes(x = gdpen, y = polity2)) +
+  geom_point(size = 0.5) +
+  geom_smooth() +
+  ylim(-10, 10) +
+  labs(
+    x = "Per Capita Gross Domestic Product in Thousands of USD",
+    y = "Democratization Index",
+    title = "Effect of Per Capita Gross Domestic Product on Democratization",
+    caption = "Note: Dollars are in 1985 Dollars"
+  )
 ```
 
 
 ## Project Proposal
 
-The research question for my final project is "what are the effects of democratization on a country's likelihood of civil war?" I hypothesize that the higher the absolute value of a country's polity score (index of democratization) in a given year, the less likely that a country is to experience a civil war in the same year. My hypothesis is rooted in the literature of comparative politics and political theory, of which there exist multiple schools of thought are outlined which attempt to explain the relationship between regime type and its effects on civil war. For instance, according to a 2017 publication in the Brookings Institution, Piccone argues that democracies are less likely to experience civil wars than hybrid regimes because of the presence of strong institutions that allow possible rebels to resolve political disagreements peacefully (Piccone, 2017). Similarly in scope, Slater and Fenner approach this question from a different angle, contending that strong regimes are associated with strong states to prop up the regime, meaning political stability (Slater and Fenner, 2011). The common thread tying this literature together is that the stronger a regime, the more stable a country which likely leads to less civil wars.
+The research question for my final project is "what are the effects of gross domestic product on a country's democratization index?" I hypothesize that the higher a country's GDP, the more likely a country is to have a higher democracy index score. My hypothesis is rooted in the literature of comparative politics and specifically the modernization theory of democratization which argues that there exists a strong relationship between economic wealth and democracy. For instance, 19 out of the 20 richest countries in the world (aside from microstates and oil kingdoms) are democracies (Singapore is the exception), while the world's 20 poorest countries are authoritarian regimes. Put simply by political scientist Seymour Lipset, "the more well-to-do a nation, the greater the chances that it will sustain democracy" (1959). 
 
-My explanatory variable of interest is the polity score of a country, which is coded as "polity2" and measures the index of democratization in a country. The polity score of a country is coded on a scale from -10 (least democratic/most authoritarian) to 10 (most democratic/least authoritarian). My outcome variable of interest is the presence of a civil war in a country, which is coded as "war" and notes whether or not a country is currently experiencing a civil war. "War" is coded as either 0 (no civil war in that country) or 1 (there is a civil war in that country). If my hypothesis is correct, we should expect to see a greater proportion of countries with a higher absolute value of polity scores being associated with no civil wars in their countries compared to there existing civil wars in their countries. Similarly, we should expect to see a greater proportion of countries with lower absolute value of polity scores being associated with the existence of civil wars in their countries compared to no civil wars. If my hypothesis is incorrect, we will not see a relationship between the polity score of a country and the presence of a civil war in that country.
+My explanatory variable of interest is the GDP per capita of a country, which is coded as "gdpen." It is recorded in tens of thousands of dollars and is in 1985 dollars. My outcome variable of interest is the polity score of a country, which is coded on a scale from -10 (least democratic/most authoritarian) to 10 (most democratic/least authoritarian). If my hypothesis is correct, we should expect to see a positive relationship between GDP per capita and polity score. If my hypothesis is incorrect, we will not see a relationship between the GDP per capita and polity score.
 
 
 ## Project thoughts
