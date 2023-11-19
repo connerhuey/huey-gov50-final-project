@@ -7,6 +7,93 @@ output:
     self_contained: false
 ---
 
+I have produced six data visualizations pertaining to my research question of the effects of GDP per capita on democratization. These visualizations provide insight into differences in the effects of GDP per capita on democratization based off continent. My graphs for the Western World, Latin America, and Sub-Saharan Africa appear to demonstrate a generally positive relationship between GDP per capita and democratization. For Eastern Europe, this relationship appears to be positive until per capita GDP reaches $4.5 thousand before turning into a negative relationship. For Asian countries, this relationship appears ot be positive until per capita GDP reaches $9 thousand before turning into a negative relationship. And for North African/Middle Eastern countries, this relationship appears to be negative until per capita GDP reaches approximately $35 thousand before turning into a positive relationship. These findings appear to demonstrate that depending on continent, the effects of GDP per capita on democratization may vary.
+
+## Data Analysis
+```{r}
+library(tidyverse)
+civilwar <- read_csv("civilwar.csv")
+
+civilwar |>
+  filter(western == 1) |>
+  ggplot(aes(x = gdpen, y = polity2)) +
+  geom_point(size = 0.5) +
+  geom_smooth() +
+  ylim(-10, 10) +
+  labs(
+    x = "Per Capita Gross Domestic Product in Thousands of USD",
+    y = "Democratization Index",
+    title = "Effect of Per Capita Gross Domestic Product on Democratization in Western \n\ Countries and Japan",
+    caption = "Note: Dollars are in 1985 Dollars"
+  )
+
+civilwar |>
+  filter(eeurop == 1) |>
+  ggplot(aes(x = gdpen, y = polity2)) +
+  geom_point(size = 0.5) +
+  geom_smooth() +
+  ylim(-10, 10) +
+  labs(
+    x = "Per Capita Gross Domestic Product in Thousands of USD",
+    y = "Democratization Index",
+    title = "Effect of Per Capita Gross Domestic Product on Democratization in Eastern Europe",
+    caption = "Note: Dollars are in 1985 Dollars"
+  )
+
+civilwar |>
+  filter(lamerica == 1) |>
+  ggplot(aes(x = gdpen, y = polity2)) +
+  geom_point(size = 0.5) +
+  geom_smooth() +
+  ylim(-10, 10) +
+  labs(
+    x = "Per Capita Gross Domestic Product in Thousands of USD",
+    y = "Democratization Index",
+    title = "Effect of Per Capita Gross Domestic Product on Democratization in Latin America",
+    caption = "Note: Dollars are in 1985 Dollars"
+  )
+
+civilwar |>
+  filter(ssafrica == 1) |>
+  ggplot(aes(x = gdpen, y = polity2)) +
+  geom_point(size = 0.5) +
+  geom_smooth() +
+  ylim(-10, 10) +
+  labs(
+    x = "Per Capita Gross Domestic Product in Thousands of USD",
+    y = "Democratization Index",
+    title = "Effect of Per Capita Gross Domestic Product on Democratization in \n\ Sub-Saharan Africa",
+    caption = "Note: Dollars are in 1985 Dollars"
+  )
+
+civilwar |>
+  filter(asia == 1) |>
+  ggplot(aes(x = gdpen, y = polity2)) +
+  geom_point(size = 0.5) +
+  geom_smooth() +
+  ylim(-10, 10) +
+  labs(
+    x = "Per Capita Gross Domestic Product in Thousands of USD",
+    y = "Democratization Index",
+    title = "Effect of Per Capita Gross Domestic Product on Democratization in Asia",
+    caption = "Note: Dollars are in 1985 Dollars"
+  )
+
+civilwar |>
+  filter(nafrme == 1) |>
+  ggplot(aes(x = gdpen, y = polity2)) +
+  geom_point(size = 0.5) +
+  geom_smooth() +
+  ylim(-10, 10) +
+  labs(
+    x = "Per Capita Gross Domestic Product in Thousands of USD",
+    y = "Democratization Index",
+    title = "Effect of Per Capita Gross Domestic Product on Democratization in \n\ North Africa/Middle East",
+    caption = "Note: Dollars are in 1985 Dollars"
+  )
+```
+
+
 ## Data Visualization
 
 I have produced two data visualizations pertaining to my research question of the effects of GDP per capita on a country's democratization. I find an interesting difference between my two visualizations. My first visualization explores the effects of GDP per capita on countries' democratization in 1999, finding that there seems to exist a positive relationship between GDP per capita and a country's democratization. However, my second visualization, which explores this relationship between GDP per capita and democratization across all countries from 1945 to 1999, there appears to be a positive relationship between GDP per capita and democratization until approximately $10,000 USD per capita when the relationship becomes negative, implying that as per capita GDP increases beyond $10,000, the more likely a country is authoritarian.
