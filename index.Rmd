@@ -7,9 +7,10 @@ output:
     self_contained: false
 ---
 
+## Data Analysis
+
 I have produced six data visualizations pertaining to my research question of the effects of GDP per capita on democratization. These visualizations provide insight into differences in the effects of GDP per capita on democratization based off continent. My graphs for the Western World, Latin America, and Sub-Saharan Africa appear to demonstrate a generally positive relationship between GDP per capita and democratization. For Eastern Europe, this relationship appears to be positive until per capita GDP reaches $4.5 thousand before turning into a negative relationship. For Asian countries, this relationship appears ot be positive until per capita GDP reaches $9 thousand before turning into a negative relationship. And for North African/Middle Eastern countries, this relationship appears to be negative until per capita GDP reaches approximately $35 thousand before turning into a positive relationship. These findings appear to demonstrate that depending on continent, the effects of GDP per capita on democratization may vary.
 
-## Data Analysis
 ```{r}
 library(tidyverse)
 civilwar <- read_csv("civilwar.csv")
