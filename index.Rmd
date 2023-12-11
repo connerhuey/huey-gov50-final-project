@@ -6,6 +6,157 @@ output:
   distill::distill_article:
     self_contained: false
 ---
+## Final Project
+
+# Introduction:
+
+The research question for my final project is “Does a country’s wealth influence whether or not it is a democracy?” More specifically, this question can be asked as "What are the effects of gross domestic product (GDP) on a country's democratization index?" I hypothesize that the higher a country's GDP, the more likely a country is to have a higher democracy index score. My hypothesis is rooted in the literature of comparative politics and specifically the modernization theory of democratization which argues that there exists a strong relationship between economic wealth and democracy. For instance, 19 out of the 20 richest countries in the world (aside from microstates and oil kingdoms) are democracies, with Singapore being the exception, while the world's 20 poorest countries are authoritarian regimes (Levitsky, 2022). Put simply by political scientist Seymour Lipset, "The more well-to-do a nation, the greater the chances that it will sustain democracy" (Lipset, 1959, 75). 
+
+My explanatory variable of interest is the GDP per capita of a country, which is coded as "gdpen." It is recorded in tens of thousands of dollars and is in 1985 dollars. My outcome variable of interest is a country's polity score, which is coded on a scale from -10 (least democratic/most authoritarian) to 10 (most democratic/least authoritarian). If my hypothesis is correct, we should expect to see a positive relationship between GDP per capita and polity score. If my hypothesis is incorrect, we will not see a relationship between the GDP per capita and polity score. When I run my regression, a positive, significant coefficient would indicate support for my hypothesis.
+
+# Data:
+
+In this study, I use data from the Civil Wars dataset. The dataset primarily includes information that would be beneficial for studies that center around examining civil wars in countries, featuring variables such as “war” coded as either 1 or 0 which indicate whether a civil war occurred in a country in a given year. However, the dataset also features information beneficial for this study. The data contains annually collected data from countries from 1945 to 1999, allowing us to estimate cross-sectional relationships between GDP per capita and the level of democratization in countries. In this study, I will specifically focus on the relationship between GDP per capita and the level of democratization among countries in 1999, given that this is the most recent year to 2023 and thus allows my findings to be more applicable to present-day democratization, as well as minimize the need to compensate for confounders such as year if this study were to incorporate all years in the analysis. As such, this study’s research design will be cross-sectional and between subjects, given that I will be comparing outcomes at the specific point of time in 1999. My main outcome of interest is democratic index scores, coded as "polity2" on a scale of +10 to -10 (most democratic to least democratic). My main explanatory variable of interest is GDP per capita, coded as "gdpen" and has values measured in tens of thousands of dollars.
+
+My data possesses some limitations that may affect the generalizability of my findings. For instance, my data does not take into account other political factors that contribute to democratization, such as the international relations landscape. Democratization index levels during the Cold War may be lower than index levels in 1999, the year I am focusing on, given competition between the United States and the Soviet Union which led both countries to support dictatorships. Additionally, because my data only features 129 countries in 1999, my data omits many countries that exist in 2023, limiting the applicability of my findings to democratic outcomes in 2023. Furthermore, another confounding factor that can impact my results is that of geographic regions, with some regions of the world being wealthier or poorer than others. Consequently, I will be controlling for regional differences in my regression.
+
+# Results:
+
+I present a regression estimate of the relationship between GDP per capita and the democratization index among countries. Table 1 suggests that there is a statistically significant but weak positive relationship between GDP per capita and a country’s democratization, given that the p-value is less than 0.05 but has an r-squared value of 0.381. The coefficient is 0.427, meaning that across all countries, an increase of a thousand dollars per capita appears to increase the polity score of a country by 0.427 points. Graphically, the relationship between GDP per capita and democratization appears to be positive until GDP per capita reaches approximately $15 thousand before turning negative.
+
+However, this relationship between GDP per capita and a country’s democratization index appears to vary by geographic region. As seen in the graphs, Western countries and Japan in 1999 appear to be consistently strong democracies regardless of GDP per capita, while Eastern European, Latin American, and Sub-Saharan African countries in 1999 generally have a positive relationship between the two variables. By contrast, Asian countries in 1999 appear to experience a positive relationship between GDP per capita and democratization until approximately $7.5 thousand per capita when the relationship gradually became negative. Similarly, in North African/Middle Eastern countries in 1999, the relationship appears to be positive until approximately $4 thousand per capita, then negative until $7 thousand per capita, and then positive again at approximately $8 thousand per capita. 
+
+Although we observe a statistically significant positive relationship between GDP per capita and the level of democratization, we should not interpret these findings causally. First, this is an observational study, not an experimental study, which limits this study’s ability to demonstrate a causal relationship between GDP per capita and the level of democratization. Even though my regression controls for regional differences, a broad range of confounding variables may affect a country’s level of democratization beyond GDP per capita. Some of these relate closely to GDP per capita such as the prevalence of economic inequality in a country, which can reduce support for democracy within a country (Andersen, 2012). Beyond economic confounders, other factors that may influence democratization within a country include a country’s stability, domestic policies, or behavior by political leaders. Examining the region of Eastern Europe specifically, another confounder that may influence democratization trends in countries within the region involves developments from the collapse of the Soviet Union.
+
+```{r}
+library(tidyverse)
+civilwar <- read_csv("civilwar.csv")
+
+dem_1999 <- subset(civilwar, year == 1999)
+
+dem_1999 |>
+  ggplot(aes(x = gdpen, y = polity2)) +
+  geom_point(size = 0.5) +
+  geom_smooth() +
+  ylim(-10, 10) +
+  labs(
+    x = "Per Capita Gross Domestic Product in Thousands of USD",
+    y = "Democratization Index",
+    title = "Effect of Per Capita Gross Domestic Product on Democratization in 1999",
+    caption = "Note: Dollars are in 1985 Dollars"
+  )
+
+dem_effect <- lm(polity2 ~ gdpen + western + eeurop + lamerica + ssafrica + asia + nafrme,
+                      data = dem_1999)
+
+var_labels <- c(
+  "polity2" = "Democratization Index",
+  "gdpen" = "GDP per Capita",
+  "western" = "Western Countries",
+  "eeurop" = "Eastern European Countries",
+  "ssafrica" = "Sub-Saharan African Countries",
+  "asia" = "Asian Countries",
+  "nafrme" = "North African and Middle Eastern Countries"
+  )
+
+modelsummary::modelsummary(dem_effect,
+                           statistic = c("s.e. = {std.error}",
+                                         "p = {p.value}"),
+                           coef_map = var_labels,
+                           gof_map = c("nobs", "r.squared", "adj.r.squared"))
+
+dem_1999 |>
+  filter(western == 1) |>
+  ggplot(aes(x = gdpen, y = polity2)) +
+  geom_point(size = 0.5) +
+  geom_smooth() +
+  ylim(-10, 10) +
+  labs(
+    x = "Per Capita Gross Domestic Product in Thousands of USD",
+    y = "Democratization Index",
+    title = "Effect of Per Capita Gross Domestic Product on Democratization in Western \n\ Countries and Japan in 1999",
+    caption = "Note: Dollars are in 1985 Dollars"
+  )
+
+dem_1999 |>
+  filter(eeurop == 1) |>
+  ggplot(aes(x = gdpen, y = polity2)) +
+  geom_point(size = 0.5) +
+  geom_smooth() +
+  ylim(-10, 10) +
+  labs(
+    x = "Per Capita Gross Domestic Product in Thousands of USD",
+    y = "Democratization Index",
+    title = "Effect of Per Capita Gross Domestic Product on Democratization in Eastern Europe in 1999",
+    caption = "Note: Dollars are in 1985 Dollars"
+  )
+
+dem_1999 |>
+  filter(lamerica == 1) |>
+  ggplot(aes(x = gdpen, y = polity2)) +
+  geom_point(size = 0.5) +
+  geom_smooth() +
+  ylim(-10, 10) +
+  labs(
+    x = "Per Capita Gross Domestic Product in Thousands of USD",
+    y = "Democratization Index",
+    title = "Effect of Per Capita Gross Domestic Product on Democratization in \n\ Latin America in 1999",
+    caption = "Note: Dollars are in 1985 Dollars"
+  )
+
+dem_1999 |>
+  filter(ssafrica == 1) |>
+  ggplot(aes(x = gdpen, y = polity2)) +
+  geom_point(size = 0.5) +
+  geom_smooth() +
+  ylim(-10, 10) +
+  labs(
+    x = "Per Capita Gross Domestic Product in Thousands of USD",
+    y = "Democratization Index",
+    title = "Effect of Per Capita Gross Domestic Product on Democratization in \n\ Sub-Saharan Africa in 1999",
+    caption = "Note: Dollars are in 1985 Dollars"
+  )
+
+dem_1999 |>
+  filter(asia == 1) |>
+  ggplot(aes(x = gdpen, y = polity2)) +
+  geom_point(size = 0.5) +
+  geom_smooth() +
+  ylim(-10, 10) +
+  labs(
+    x = "Per Capita Gross Domestic Product in Thousands of USD",
+    y = "Democratization Index",
+    title = "Effect of Per Capita Gross Domestic Product on Democratization in \n\
+    Asia in 1999",
+    caption = "Note: Dollars are in 1985 Dollars"
+  )
+
+dem_1999 |>
+  filter(nafrme == 1) |>
+  ggplot(aes(x = gdpen, y = polity2)) +
+  geom_point(size = 0.5) +
+  geom_smooth() +
+  ylim(-10, 10) +
+  labs(
+    x = "Per Capita Gross Domestic Product in Thousands of USD",
+    y = "Democratization Index",
+    title = "Effect of Per Capita Gross Domestic Product on Democratization in \n\ North Africa/Middle East in 1999",
+    caption = "Note: Dollars are in 1985 Dollars"
+  )
+```
+
+# Conclusion:
+
+In this study, I examined the relationship between GDP per capita and polity scores to determine the extent to which wealth influences a country’s democratization. I find limited support for my hypothesis that there exists a positive relationship between GDP per capita and democratization levels. This is because I find a statistically significant but weak positive relationship between GDP per capita and democratization levels among countries, with different regions of the world additionally experiencing different relationships between these two variables. For instance, in Asian and Middle Eastern/North African countries, this relationship appears to fluctuate while the relationship is generally positive among other regions of the world.
+
+One limitation of my study is that my data is over 20 years old, meaning that my findings may not be applicable to the current state of GDP per capita and democratization in 2023. Building upon this, another limitation of my study is that not all countries are represented in this dataset, meaning that my findings are likely not representative of the state of democratization among all countries globally. If provided more time and resources to conduct further research, I would improve upon this study by building a dataset updated for 2023, including countries that were either omitted in the original dataset or founded since the original dataset’s publication. Additionally, I would update GDP per capita values to be in 2023 dollars.
+
+
+
+
+
+## NOTE: Anything before this line is previous work. Everything above is my final project.
+
 
 ## Data Analysis
 
@@ -15,7 +166,7 @@ I have produced six data visualizations pertaining to my research question of th
 library(tidyverse)
 civilwar <- read_csv("civilwar.csv")
 
-civilwar |>
+dem_1999 |>
   filter(western == 1) |>
   ggplot(aes(x = gdpen, y = polity2)) +
   geom_point(size = 0.5) +
@@ -24,11 +175,11 @@ civilwar |>
   labs(
     x = "Per Capita Gross Domestic Product in Thousands of USD",
     y = "Democratization Index",
-    title = "Effect of Per Capita Gross Domestic Product on Democratization in Western \n\ Countries and Japan",
+    title = "Effect of Per Capita Gross Domestic Product on Democratization in Western \n\ Countries and Japan in 1999",
     caption = "Note: Dollars are in 1985 Dollars"
   )
 
-civilwar |>
+dem_1999 |>
   filter(eeurop == 1) |>
   ggplot(aes(x = gdpen, y = polity2)) +
   geom_point(size = 0.5) +
@@ -37,11 +188,11 @@ civilwar |>
   labs(
     x = "Per Capita Gross Domestic Product in Thousands of USD",
     y = "Democratization Index",
-    title = "Effect of Per Capita Gross Domestic Product on Democratization in Eastern Europe",
+    title = "Effect of Per Capita Gross Domestic Product on Democratization in Eastern Europe in 1999",
     caption = "Note: Dollars are in 1985 Dollars"
   )
 
-civilwar |>
+dem_1999 |>
   filter(lamerica == 1) |>
   ggplot(aes(x = gdpen, y = polity2)) +
   geom_point(size = 0.5) +
@@ -50,11 +201,11 @@ civilwar |>
   labs(
     x = "Per Capita Gross Domestic Product in Thousands of USD",
     y = "Democratization Index",
-    title = "Effect of Per Capita Gross Domestic Product on Democratization in Latin America",
+    title = "Effect of Per Capita Gross Domestic Product on Democratization in \n\ Latin America in 1999",
     caption = "Note: Dollars are in 1985 Dollars"
   )
 
-civilwar |>
+dem_1999 |>
   filter(ssafrica == 1) |>
   ggplot(aes(x = gdpen, y = polity2)) +
   geom_point(size = 0.5) +
@@ -63,11 +214,11 @@ civilwar |>
   labs(
     x = "Per Capita Gross Domestic Product in Thousands of USD",
     y = "Democratization Index",
-    title = "Effect of Per Capita Gross Domestic Product on Democratization in \n\ Sub-Saharan Africa",
+    title = "Effect of Per Capita Gross Domestic Product on Democratization in \n\ Sub-Saharan Africa in 1999",
     caption = "Note: Dollars are in 1985 Dollars"
   )
 
-civilwar |>
+dem_1999 |>
   filter(asia == 1) |>
   ggplot(aes(x = gdpen, y = polity2)) +
   geom_point(size = 0.5) +
@@ -76,11 +227,11 @@ civilwar |>
   labs(
     x = "Per Capita Gross Domestic Product in Thousands of USD",
     y = "Democratization Index",
-    title = "Effect of Per Capita Gross Domestic Product on Democratization in Asia",
+    title = "Effect of Per Capita Gross Domestic Product on Democratization in Asia in 1999",
     caption = "Note: Dollars are in 1985 Dollars"
   )
 
-civilwar |>
+dem_1999 |>
   filter(nafrme == 1) |>
   ggplot(aes(x = gdpen, y = polity2)) +
   geom_point(size = 0.5) +
@@ -89,7 +240,7 @@ civilwar |>
   labs(
     x = "Per Capita Gross Domestic Product in Thousands of USD",
     y = "Democratization Index",
-    title = "Effect of Per Capita Gross Domestic Product on Democratization in \n\ North Africa/Middle East",
+    title = "Effect of Per Capita Gross Domestic Product on Democratization in \n\ North Africa/Middle East in 1999",
     caption = "Note: Dollars are in 1985 Dollars"
   )
 ```
