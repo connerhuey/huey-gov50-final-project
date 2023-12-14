@@ -1,5 +1,5 @@
 ---
-title: "Gov 50 Final Project"
+title: "Producing for Democracy? An Examination of GDP per Capita on Democratization"
 author: "Conner Huey"
 description: "My Final Project"
 output:
