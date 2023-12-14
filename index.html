@@ -1525,7 +1525,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <p>My explanatory variable of interest is the GDP per capita of a country, which is coded as <code>gdpen</code>. It is recorded in thousands of dollars and is in 1985 dollars. My outcome variable of interest is a country’s polity score, which is coded on a scale from -10 (least democratic/most authoritarian) to 10 (most democratic/least authoritarian). If my hypothesis is correct, we should expect to see a positive relationship between GDP per capita and polity score. If my hypothesis is incorrect, we will not see a relationship between the GDP per capita and polity score. When I run my regression, a positive, significant coefficient would indicate support for my hypothesis.</p>
 <h1 id="data">Data:</h1>
 <p>In this study, I use data from the Civil Wars dataset. The dataset primarily includes information that would be beneficial for studies that center around examining civil wars in countries, featuring variables such as <code>war</code> coded as either 1 or 0 which indicate whether a civil war occurred in a country in a given year. The dataset comes from political scientists James Fearon and David Laitin and their paper “Ethnicity, Insurgency, and Civil War” in which they utilize this dataset to examine civil wars in the second half of the 20th century. However, the dataset also features information beneficial for this study. The data contains annually collected data from countries from 1945 to 1999, allowing us to estimate cross-sectional relationships between GDP per capita and the level of democratization in countries. In this study, I will specifically focus on the relationship between GDP per capita and the level of democratization among countries in 1999, given that this is the most recent year to 2023 and thus allows my findings to be more applicable to present-day democratization, as well as minimize the need to compensate for confounders such as year if this study were to incorporate all years in the analysis. As such, this study’s research design will be cross-sectional and between subjects, given that I will be comparing outcomes at the specific point of time in 1999. My main outcome of interest is democratic index scores, coded as <code>polity2</code> on a scale of +10 to -10 (most democratic to least democratic). My main explanatory variable of interest is GDP per capita, coded as <code>gdpen</code> and has values measured in thousands of dollars.</p>
-<p>My data possesses some limitations that may affect the generalizability of my findings. For instance, my data does not take into account other political factors that contribute to democratization, such as the international relations landscape. Democratization index levels during the Cold War may be lower than index levels in 1999, the year I am focusing on, given competition between the United States and the Soviet Union which led both countries to support dictatorships. Additionally, because my data only features 129 countries in 1999, my data omits many countries that exist in 2023, limiting the applicability of my findings to democratic outcomes in 2023. Furthermore, another confounding factor that can impact my results is that of geographic regions, with some regions of the world being wealthier or poorer than others. Consequently, I will be controlling for regional differences in my regression.</p>
+<p>My data possesses some limitations that may affect the generalizability of my findings. For instance, my data does not take into account other political factors that contribute to democratization, such as the international relations landscape. Democratization index levels during the Cold War may be lower than index levels in 1999, the year I am focusing on, given competition between the United States and the Soviet Union which led both countries to support dictatorships. Additionally, because my data only features 129 countries in 1999 (based off number of observations in regression), my data omits many countries that exist in 2023, limiting the applicability of my findings to democratic outcomes in 2023. Furthermore, another confounding factor that can impact my results is that of geographic regions, with some regions of the world being wealthier or poorer than others. Consequently, I will be controlling for regional differences in my regression.</p>
 <p>The following graphs are illustrations of my main outcome of interest and explanatory variable. A histogram of <code>polity2</code> illustrates that democracy index scores appear to be left-skewed, being highly skewed towards highly democratic countries. A histogram of <code>gdpen</code> appears to be right-skewed, being highly skewed towards poor countries. As such, it is possible that findings pertaining to the relationship between GDP per capita and democratization are less generalizable to high-income countries given that there are so few of them.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
@@ -1556,7 +1556,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <p><img src="index_files/figure-html5/unnamed-chunk-1-2.png" width="624" /></p>
 </div>
 <h1 id="results">Results:</h1>
-<p>I present a regression estimate of the relationship between GDP per capita and the democratization index among countries. Table 1 suggests that there is a statistically significant but weak positive relationship between GDP per capita and a country’s democratization, given that the p-value is less than 0.05 but has an r-squared value of 0.381. The coefficient is 0.427, meaning that across all countries, an increase of a thousand dollars per capita appears to increase the polity score of a country by 0.427 points. In the first graph, I provide both a linear and smooth regression. The linear regression appears to demonstrate an overall positive relationship between GDP per capita and democratization index. However, with the smooth regression, the relationship between GDP per capita and democratization appears to be positive until GDP per capita reaches approximately $15 thousand before turning negative. As such, a linear regression may not be most appropriate means of understanding the relationship between GDP per capita and democratization because it assumes continuous outcome variables, thus leading me to incorporate smooth regression lines for other graphs. Additionally, it is important to note that the confidence interval for this graph and future graphs extend beyond the confines of <code>polity2's</code> coding from -10 to +10; this does not make much substantive sense, as polity scores do not extend beyond +10 or -10. As such, I will limit the <code>ylim</code> for future graphs to -10 and +10 to correspond with the coded <code>polity2</code> values.</p>
+<p>I present a regression estimate of the relationship between GDP per capita and the democratization index among countries. Table 1 suggests that there is a statistically significant but weak positive relationship between GDP per capita and a country’s democratization, given that the p-value is less than 0.05 but has an r-squared value of 0.381. The coefficient is 0.427, meaning that across all countries, an increase of a thousand dollars per capita appears to increase the polity score of a country by 0.427 points. In the first graph, I provide both a linear and smooth regression. The linear regression appears to demonstrate an overall positive relationship between GDP per capita and democratization index. However, with the smooth regression, the relationship between GDP per capita and democratization appears to be positive until GDP per capita reaches approximately $15 thousand before turning negative. As such, a linear regression may not be most appropriate means of understanding the relationship between GDP per capita and democratization because it assumes continuous outcome variables, thus leading me to incorporate smooth regression lines for other graphs. Additionally, it is important to note that in this model, R will drop the last variable that is controlled for (in this case <code>nafrme</code>); however, this does not negatively affect the validity of my regression as there needs to be an omitted group and not all can be included. Furthermore, it is important to note that the confidence interval for this graph and future graphs extend beyond the confines of <code>polity2's</code> coding from -10 to +10; this does not make much substantive sense, as polity scores do not extend beyond +10 or -10. As such, I will limit the <code>ylim</code> for future graphs to -10 and +10 to correspond with the coded <code>polity2</code> values.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>dem_1999</span> <span class='op'>|&gt;</span></span>
@@ -1581,11 +1581,13 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='va'>dem_effect</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/lm.html'>lm</a></span><span class='op'>(</span><span class='va'>polity2</span> <span class='op'>~</span> <span class='va'>gdpen</span> <span class='op'>+</span> <span class='va'>western</span> <span class='op'>+</span> <span class='va'>eeurop</span> <span class='op'>+</span> <span class='va'>lamerica</span> <span class='op'>+</span> <span class='va'>ssafrica</span> <span class='op'>+</span> <span class='va'>asia</span> <span class='op'>+</span> <span class='va'>nafrme</span>,</span>
 <span>                      data <span class='op'>=</span> <span class='va'>dem_1999</span><span class='op'>)</span></span>
 <span></span>
+<span></span>
 <span><span class='va'>var_labels</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span></span>
 <span>  <span class='st'>"polity2"</span> <span class='op'>=</span> <span class='st'>"Democratization Index"</span>,</span>
 <span>  <span class='st'>"gdpen"</span> <span class='op'>=</span> <span class='st'>"GDP per Capita"</span>,</span>
 <span>  <span class='st'>"western"</span> <span class='op'>=</span> <span class='st'>"Western Countries"</span>,</span>
 <span>  <span class='st'>"eeurop"</span> <span class='op'>=</span> <span class='st'>"Eastern European Countries"</span>,</span>
+<span>  <span class='st'>"lamerica"</span> <span class='op'>=</span> <span class='st'>"Latin American Countries"</span>,</span>
 <span>  <span class='st'>"ssafrica"</span> <span class='op'>=</span> <span class='st'>"Sub-Saharan African Countries"</span>,</span>
 <span>  <span class='st'>"asia"</span> <span class='op'>=</span> <span class='st'>"Asian Countries"</span>,</span>
 <span>  <span class='st'>"nafrme"</span> <span class='op'>=</span> <span class='st'>"North African and Middle Eastern Countries"</span></span>
@@ -1672,6 +1674,28 @@ s.e. = 1.889
 </td>
 <td style="text-align:center;">
 p = 0.012
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Latin American Countries
+</td>
+<td style="text-align:center;">
+8.869
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+s.e. = 1.860
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+p = &lt;0.001
 </td>
 </tr>
 <tr>
